@@ -1,90 +1,110 @@
-Vardiya Sistemi
+🕒 Vardiya Sistemi
 
-  Bu proje, Ruby on Rails backend ve Next.js (React) frontend kullanılarak geliştirilmiş basit bir vardiya yönetim sistemidir.
+Vardiya Sistemi, Ruby on Rails (Backend) ve Next.js (Frontend) kullanılarak geliştirilmiş basit ama işlevsel bir vardiya yönetim uygulamasıdır.
 
-  Özellikler
+🚀 Özellikler
 
-   - Vardiya Planı Yönetimi: Yeni vardiya planları (Schedules) oluşturun, mevcut planları listeleyin ve silin.
-   - Vardiya Yönetimi: Her bir plana özel vardiyalar (Shifts) ekleyin, bunları görüntüleyin ve silin.
-   - Modern Arayüz: Bootstrap ile geliştirilmiş, temiz ve duyarlı bir kullanıcı arayüzü.
-   - Uçtan Uca Testler: Cypress ve Cucumber ile yazılmış test senaryoları ile uygulamanın ana iş akışlarının doğrulanması.
+Vardiya Planı Yönetimi: Yeni vardiya planları (Schedules) oluşturun, mevcut planları listeleyin veya silin.
 
-  Kullanılan Teknolojiler
+Vardiya Yönetimi: Her plan için özel vardiyalar (Shifts) ekleyin, görüntüleyin ve silin.
 
-   - Backend:
-     - Ruby on Rails
-     - SQLite3
-   - Frontend:
-     - Next.js (React)
-     - Bootstrap
-   - Test:
-     - Cypress
-     - Cucumber
+Modern Arayüz: Bootstrap tabanlı, sade ve duyarlı (responsive) bir kullanıcı arayüzü.
 
-  Proje Yapısı
+Uçtan Uca Testler: Cypress ve Cucumber ile yazılmış test senaryoları sayesinde iş akışları doğrulanır.
 
-  Proje, üç ana klasörden oluşmaktadır:
+🧱 Kullanılan Teknolojiler
+Backend
 
-   - vardiya_backend/: Ruby on Rails ile geliştirilen API sunucusu.
-   - vardiya_frontend/: Next.js ile geliştirilen kullanıcı arayüzü.
-   - vardiya_test/: Cypress ve Cucumber ile yazılmış uçtan uca testler.
+Ruby on Rails
 
-  Kurulum ve Çalıştırma
+SQLite3
 
-  Projeyi yerel makinenizde çalıştırmak için aşağıdaki adımları izleyin.
+Frontend
 
-  Gereksinimler
+Next.js (React)
 
-   - Ruby ve Rails
-   - Node.js ve npm
+Bootstrap
 
-  1. Backend Kurulumu
+Test
 
-    1 # Backend klasörüne gidin
-    2 cd vardiya_backend
-    3
-    4 # Gerekli gem'leri yükleyin
-    5 bundle install
-    6
-    7 # Veritabanını oluşturun ve migrate edin
-    8 rails db:migrate
-    9
-   10 # Test verilerini veritabanına ekleyin
-   11 rails db:seed
+Cypress
 
-  2. Frontend Kurulumu
+Cucumber
 
-   1 # Frontend klasörüne gidin
-   2 cd vardiya_frontend
-   3
-   4 # Gerekli npm paketlerini yükleyin
-   5 npm install
+📂 Proje Yapısı
+vardiya_sistemi/
+├── vardiya_backend/   # Ruby on Rails ile geliştirilen API sunucusu
+├── vardiya_frontend/  # Next.js (React) ile geliştirilen kullanıcı arayüzü
+└── vardiya_test/      # Cypress ve Cucumber ile yazılmış uçtan uca testler
 
-  3. Uygulamayı Çalıştırma
+⚙️ Kurulum ve Çalıştırma
 
-  Uygulamanın çalışabilmesi için hem backend hem de frontend sunucularının aynı anda çalışıyor olması gerekir. Bunun için iki ayrı
-  terminal kullanın.
+Projeyi yerel ortamda çalıştırmak için aşağıdaki adımları takip edin.
 
-  Terminal 1: Backend Sunucusunu Başlatma
-   1 cd vardiya_backend
-   2 rails s
-  Backend sunucusu http://localhost:3000 adresinde çalışmaya başlayacaktır.
+🧩 Gereksinimler
 
-  Terminal 2: Frontend Sunucusunu Başlatma
-   1 cd vardiya_frontend
-   2 npm run dev
-  Frontend sunucusu http://localhost:3001 adresinde çalışmaya başlayacaktır. Artık tarayıcınızdan bu adrese giderek uygulamayı
-  kullanabilirsiniz.
+Ruby ve Rails
 
-  Testleri Çalıştırma
+Node.js ve npm
 
-  Uçtan uca testleri çalıştırmak için:
+1️⃣ Backend Kurulumu
+# Backend klasörüne gidin
+cd vardiya_backend
 
-   1. Backend ve frontend sunucularının çalıştığından emin olun.
-   2. Yeni bir terminal açın ve test klasörüne gidin.
-   3. Gerekli bağımlılıkları yükleyin (sadece ilk seferde):
-   1    cd vardiya_test
-   2    npm install
-   4. Cypress test arayüzünü açın:
-   1    npx cypress open
-   5. Açılan Cypress penceresinden vardiya.feature dosyasını seçerek testi başlatın.
+# Gerekli gem'leri yükleyin
+bundle install
+
+# Veritabanını oluşturun ve migrate edin
+rails db:migrate
+
+# Test verilerini ekleyin
+rails db:seed
+
+2️⃣ Frontend Kurulumu
+# Frontend klasörüne gidin
+cd vardiya_frontend
+
+# Gerekli npm paketlerini yükleyin
+npm install
+
+3️⃣ Uygulamayı Çalıştırma
+
+Uygulamanın çalışabilmesi için hem backend hem de frontend sunucularının aynı anda çalışıyor olması gerekir.
+Bunun için iki ayrı terminal kullanın:
+
+Terminal 1 – Backend:
+
+cd vardiya_backend
+rails s
+
+
+Backend sunucusu: http://localhost:3000
+
+Terminal 2 – Frontend:
+
+cd vardiya_frontend
+npm run dev
+
+
+Frontend sunucusu: http://localhost:3001
+
+Artık tarayıcından http://localhost:3001
+ adresine giderek uygulamayı kullanabilirsin.
+
+🧪 Testleri Çalıştırma
+
+Uçtan uca testleri çalıştırmak için:
+
+# Backend ve frontend çalışıyor olmalı
+
+# Test klasörüne gidin
+cd vardiya_test
+
+# Gerekli bağımlılıkları yükleyin (sadece ilk seferde)
+npm install
+
+# Cypress arayüzünü açın
+npx cypress open
+
+
+Açılan pencereden vardiya.feature dosyasını seçip testleri başlatabilirsiniz.
