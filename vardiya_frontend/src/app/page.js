@@ -1,66 +1,134 @@
-import Image from "next/image";
-import styles from "./page.module.css";
+'use client';
 
-export default function Home() {
+import { useState, useEffect } from 'react';
+import Link from 'next/link';
+import { getSchedules, createSchedule, deleteSchedule } from 'lib/api';
+
+// Main Page Component
+export default function HomePage() {
+  const [schedules, setSchedules] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+  const [showModal, setShowModal] = useState(false);
+
+  useEffect(() => {
+    fetchSchedules();
+  }, []);
+
+  const fetchSchedules = async () => {
+    try {
+      setLoading(true);
+      const response = await getSchedules();
+      // The response from jsonapi-serializer is nested under 'data'
+      setSchedules(response.data);
+      setError(null);
+    } catch (err) {
+      setError('Failed to fetch schedules. Make sure the backend server is running.');
+      console.error(err);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const handleCreateSchedule = async (e) => {
+    e.preventDefault();
+    const formData = new FormData(e.target);
+    const newSchedule = {
+      name: formData.get('name'),
+      start_date: formData.get('start_date'),
+      end_date: formData.get('end_date'),
+    };
+
+    try {
+      await createSchedule(newSchedule);
+      setShowModal(false);
+      fetchSchedules(); // Refresh the list
+    } catch (err) {
+      setError('Failed to create schedule.');
+      console.error(err);
+    }
+  };
+  
+  const handleDeleteSchedule = async (id) => {
+    if (window.confirm('Are you sure you want to delete this schedule?')) {
+      try {
+        await deleteSchedule(id);
+        fetchSchedules(); // Refresh the list
+      } catch (err) {
+        setError('Failed to delete schedule.');
+        console.error(err);
+      }
+    }
+  };
+
+
   return (
-    <div className={styles.page}>
-      <main className={styles.main}>
-        <Image
-          className={styles.logo}
-          src="/next.svg"
-          alt="Next.js logo"
-          width={100}
-          height={20}
-          priority
-        />
-        <div className={styles.intro}>
-          <h1>To get started, edit the page.js file.</h1>
-          <p>
-            Looking for a starting point or more instructions? Head over to{" "}
-            <a
-              href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              Templates
-            </a>{" "}
-            or the{" "}
-            <a
-              href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              Learning
-            </a>{" "}
-            center.
-          </p>
+    <div>
+      <header className="d-flex justify-content-between align-items-center mb-4">
+        <h1>Vardiya Planları</h1>
+        <button className="btn btn-primary" onClick={() => setShowModal(true)}>
+          Yeni Plan Oluştur
+        </button>
+      </header>
+
+      {loading && <p>Loading...</p>}
+      {error && <div className="alert alert-danger">{error}</div>}
+      
+      {!loading && !error && (
+        <div className="row">
+          {schedules.map((schedule) => (
+            <div key={schedule.id} className="col-md-4 mb-4">
+              <div className="card">
+                <div className="card-body">
+                  <h5 className="card-title">{schedule.attributes.name}</h5>
+                  <p className="card-text">
+                    {schedule.attributes.start_date} - {schedule.attributes.end_date}
+                  </p>
+                  <Link href={`/schedules/${schedule.id}`} className="btn btn-info me-2">
+                    Vardiyaları Görüntüle
+                  </Link>
+                   <button onClick={() => handleDeleteSchedule(schedule.id)} className="btn btn-danger">
+                    Sil
+                  </button>
+                </div>
+              </div>
+            </div>
+          ))}
         </div>
-        <div className={styles.ctas}>
-          <a
-            className={styles.primary}
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className={styles.logo}
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={16}
-              height={16}
-            />
-            Deploy Now
-          </a>
-          <a
-            className={styles.secondary}
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Documentation
-          </a>
+      )}
+
+      {showModal && (
+        <div className="modal show d-block" tabIndex="-1">
+          <div className="modal-dialog">
+            <div className="modal-content">
+              <div className="modal-header">
+                <h5 className="modal-title">Yeni Vardiya Planı</h5>
+                <button type="button" className="btn-close" onClick={() => setShowModal(false)}></button>
+              </div>
+              <div className="modal-body">
+                <form onSubmit={handleCreateSchedule}>
+                  <div className="mb-3">
+                    <label htmlFor="name" className="form-label">Plan Adı</label>
+                    <input type="text" className="form-control" id="name" name="name" required />
+                  </div>
+                  <div className="mb-3">
+                    <label htmlFor="start_date" className="form-label">Başlangıç Tarihi</label>
+                    <input type="date" className="form-control" id="start_date" name="start_date" required />
+                  </div>
+                  <div className="mb-3">
+                    <label htmlFor="end_date" className="form-label">Bitiş Tarihi</label>
+                    <input type="date" className="form-control" id="end_date" name="end_date" required />
+                  </div>
+                  <div className="modal-footer">
+                    <button type="button" className="btn btn-secondary" onClick={() => setShowModal(false)}>Kapat</button>
+                    <button type="submit" className="btn btn-primary">Oluştur</button>
+                  </div>
+                </form>
+              </div>
+            </div>
+          </div>
         </div>
-      </main>
+      )}
     </div>
   );
 }

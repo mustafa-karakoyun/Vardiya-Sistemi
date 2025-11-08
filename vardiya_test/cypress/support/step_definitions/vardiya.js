@@ -1,100 +1,71 @@
 import { Given, When, Then } from "@badeball/cypress-cucumber-preprocessor";
 
-// Common Steps
-When('I fill in {string} with {string}', (field, value) => {
-  // Handle special case for edit form - check if edit_name exists
-  cy.get('body').then(($body) => {
-    const editField = $body.find('[data-cy="edit_name"]');
-    if (field === 'name' && editField.length > 0 && editField.is(':visible')) {
-      // If we're in edit mode, use edit_name
-      cy.get('[data-cy="edit_name"]').clear().type(value);
-    } else {
-      // Otherwise use the regular field
-      cy.get(`[data-cy="${field}"]`).then(($elements) => {
-        if ($elements.length > 1) {
-          // If multiple found, use the visible one or the first one
-          cy.get(`[data-cy="${field}"]:visible`).first().clear().type(value);
-        } else {
-          cy.get(`[data-cy="${field}"]`).clear().type(value);
-        }
-      });
-    }
+const FRONTEND_URL = "http://localhost:3001";
+
+Given("I am on the main page", () => {
+  cy.visit(FRONTEND_URL);
+});
+
+Then('I should see the heading {string}', (heading) => {
+  cy.get('h1').should('contain', heading);
+});
+
+When('I create a new schedule named {string} for {string} to {string}', (name, startDate, endDate) => {
+  cy.contains('button', 'Yeni Plan Oluştur').click();
+  cy.get('.modal').should('be.visible');
+  cy.get('.modal input[name="name"]').type(name);
+  cy.get('.modal input[name="start_date"]').type(startDate);
+  cy.get('.modal input[name="end_date"]').type(endDate);
+  cy.get('.modal button[type="submit"]').click();
+});
+
+Then('I should see a schedule card for {string}', (name) => {
+  cy.get('.card-title').contains(name).should('be.visible');
+});
+
+When('I view the shifts for {string}', (name) => {
+  cy.get('.card-title').contains(name).parents('.card-body').find('a').contains('Vardiyaları Görüntüle').click();
+});
+
+Then('I should see the details for {string}', (name) => {
+  cy.get('h1').should('contain', name);
+});
+
+When('I add a new shift named {string} from {string} to {string}', (name, startTime, endTime) => {
+  cy.contains('button', 'Yeni Vardiya Ekle').click();
+  cy.get('.modal').should('be.visible');
+  cy.get('.modal input[name="name"]').type(name);
+  cy.get('.modal input[name="start_time"]').type(startTime);
+  cy.get('.modal input[name="end_time"]').type(endTime);
+  cy.get('.modal button[type="submit"]').click();
+});
+
+Then('I should see a shift named {string} in the list', (name) => {
+  cy.get('.list-group-item').contains(name).should('be.visible');
+});
+
+When('I delete the shift named {string}', (name) => {
+  cy.get('.list-group-item').contains(name).parents('.list-group-item').within(() => {
+    cy.get('button').contains('Sil').click();
   });
+  cy.on('window:confirm', () => true);
 });
 
-When('I click {string}', (buttonText) => {
-  // Handle form submit buttons - try multiple approaches
-  // Special handling for form submit buttons like "New Schedule" and "Add Shift"
-  if (buttonText === 'New Schedule' || buttonText === 'Add Shift') {
-    // For form submit buttons, find the form and submit it directly
-    // First try to find and click the button
-    cy.get('form').first().within(() => {
-      cy.get('button[type="submit"]').should('contain', buttonText).click({ force: true });
-    });
-  } else {
-    // For other buttons, try normal approach
-    cy.contains('button', buttonText, { timeout: 5000 }).should('be.visible').click();
-  }
+Then('I should not see a shift named {string} in the list', (name) => {
+  cy.contains('.list-group-item', name).should('not.exist');
 });
 
-Then("I should see {string}", (text) => {
-  cy.contains(text, { timeout: 10000 }).should("be.visible");
+When('I go back to the main page', () => {
+  cy.get('a').contains('Bütün Planlara Geri Dön').click();
 });
 
-// New Steps for Schedules and Shifts
-Given('I am on the schedules page', () => {
-  cy.visit('/schedules');
-  cy.wait(1000); // Wait for data to load
-});
-
-Given('I am on the schedule details page for {string}', (scheduleName) => {
-  // First, visit the schedules page to find the schedule
-  cy.visit('/schedules');
-  cy.wait(2000); // Wait for data to load
-  
-  // Find the schedule link by name (partial match since link contains name and dates)
-  // The link text format is: "ScheduleName (start_date to end_date)"
-  // Try to find link that contains the schedule name
-  cy.get('a').contains(scheduleName, { timeout: 10000 }).should('be.visible').then(($link) => {
-    const href = $link.attr('href');
-    if (href && href.includes('/schedules/')) {
-      const scheduleId = href.split('/schedules/').pop().split('/')[0];
-      cy.visit(`/schedules/${scheduleId}`);
-      cy.wait(2000); // Wait for data to load
-    } else {
-      throw new Error(`Could not find schedule link for: ${scheduleName}. Found href: ${href}`);
-    }
+When('I delete the schedule named {string}', (name) => {
+  cy.get('.card-title').contains(name).parents('.card-body').within(() => {
+    cy.get('button').contains('Sil').click();
   });
+  cy.on('window:confirm', () => true);
 });
 
-When('I click {string} for {string}', (buttonText, itemName) => {
-  // Frontend uses <ul> and <li>, not tables
-  // Find the li that contains the item name (partial match)
-  // Handle confirmation dialog for delete buttons - MUST stub BEFORE clicking
-  if (buttonText === 'Delete') {
-    cy.window().then((win) => {
-      cy.stub(win, 'confirm').returns(true);
-    });
-    // Wait a bit to ensure stub is set
-    cy.wait(100);
-  }
-  cy.contains('li', itemName).within(() => {
-    cy.contains('button', buttonText).click();
-  });
-});
-
-When('I confirm the deletion', () => {
-  // This step is called AFTER clicking delete, but the stub should already be set
-  // If not already stubbed, set it now (though it should have been set in the click step)
-  cy.window().then((win) => {
-    if (!win.confirm.restore) {
-      cy.stub(win, 'confirm').returns(true);
-    }
-  });
-  // Wait a moment for any pending confirmations
-  cy.wait(200);
-});
-
-Then('I should not see {string}', (text) => {
-  cy.contains(text).should('not.exist');
+Then('I should not see a schedule card for {string}', (name) => {
+  cy.contains('.card-title', name).should('not.exist');
 });

@@ -1,9 +1,33 @@
-# This file should ensure the existence of records required to run the application in every environment (production,
-# development, test). The code here should be idempotent so that it can be executed at any point in every environment.
-# The data can then be loaded with the bin/rails db:seed command (or created alongside the database with db:setup).
-#
-# Example:
-#
-#   ["Action", "Comedy", "Drama", "Horror"].each do |genre_name|
-#     MovieGenre.find_or_create_by!(name: genre_name)
-#   end
+# Clear existing data
+Shift.destroy_all
+Schedule.destroy_all
+
+# Create Schedules
+schedule1 = Schedule.create!(
+  name: "November 2025",
+  start_date: Date.new(2025, 11, 1),
+  end_date: Date.new(2025, 11, 30)
+)
+
+schedule2 = Schedule.create!(
+  name: "December 2025",
+  start_date: Date.new(2025, 12, 1),
+  end_date: Date.new(2025, 12, 31)
+)
+
+# Create Shifts for November Schedule
+Shift.create!([
+  { name: "Morning Shift", start_time: DateTime.new(2025, 11, 1, 8, 0, 0), end_time: DateTime.new(2025, 11, 1, 16, 0, 0), schedule: schedule1 },
+  { name: "Evening Shift", start_time: DateTime.new(2025, 11, 1, 16, 0, 0), end_time: DateTime.new(2025, 11, 2, 0, 0, 0), schedule: schedule1 },
+  { name: "Night Shift", start_time: DateTime.new(2025, 11, 2, 0, 0, 0), end_time: DateTime.new(2025, 11, 2, 8, 0, 0), schedule: schedule1 }
+])
+
+# Create Shifts for December Schedule
+Shift.create!([
+  { name: "Morning Shift", start_time: DateTime.new(2025, 12, 1, 8, 0, 0), end_time: DateTime.new(2025, 12, 1, 16, 0, 0), schedule: schedule2 },
+  { name: "Evening Shift", start_time: DateTime.new(2025, 12, 1, 16, 0, 0), end_time: DateTime.new(2025, 12, 2, 0, 0, 0), schedule: schedule2 }
+])
+
+puts "Seed data created successfully!"
+puts "Created #{Schedule.count} schedules."
+puts "Created #{Shift.count} shifts."

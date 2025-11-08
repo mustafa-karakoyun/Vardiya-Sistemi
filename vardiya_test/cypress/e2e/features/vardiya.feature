@@ -1,39 +1,26 @@
-Feature: Vardiya Application
+Feature: Vardiya Application End-to-End Flow
 
-  Scenario: Create a new schedule
-    Given I am on the schedules page
-    When I fill in "name" with "Morning Shift Schedule"
-    And I fill in "start_date" with "2025-01-01"
-    And I fill in "end_date" with "2025-01-07"
-    And I click "New Schedule"
-    
+  Scenario: Create and delete schedules and shifts
+    Given I am on the main page
+    Then I should see the heading "Vardiya Planları"
 
-  Scenario: View schedules
-    Given I am on the schedules page
-    Then I should see "Morning Shift Schedule"
+    # Create a new schedule
+    When I create a new schedule named "Cypress Test Plan" for "2025-12-01" to "2025-12-31"
+    Then I should see a schedule card for "Cypress Test Plan"
 
-  Scenario: Update an existing schedule
-    Given I am on the schedules page
-    When I click "Edit" for "Morning Shift Schedule"
-    And I fill in "name" with "Updated Morning Shift Schedule"
-    And I click "Save Schedule"
+    # Navigate to the schedule's detail page
+    When I view the shifts for "Cypress Test Plan"
+    Then I should see the details for "Cypress Test Plan"
 
+    # Add a new shift
+    When I add a new shift named "Test Shift" from "2025-12-15T09:00" to "2025-12-15T17:00"
+    Then I should see a shift named "Test Shift" in the list
 
-  Scenario: Delete a schedule
-    Given I am on the schedules page
+    # Delete the shift
+    When I delete the shift named "Test Shift"
+    Then I should not see a shift named "Test Shift" in the list
 
-
-
-  Scenario: Create a new shift
-    Given I am on the schedule details page for "Morning Shift Schedule"
-
-
-  Scenario: Update an existing shift
-    Given I am on the schedule details page for "Morning Shift Schedule"
- 
-
-
-  Scenario: Delete a shift
-    Given I am on the schedule details page for "Morning Shift Schedule"
-
-
+    # Go back and delete the schedule
+    When I go back to the main page
+    And I delete the schedule named "Cypress Test Plan"
+    Then I should not see a schedule card for "Cypress Test Plan"

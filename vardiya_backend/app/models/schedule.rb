@@ -1,3 +1,3 @@
 class Schedule < ApplicationRecord
-  has_many :shifts
+  has_many :shifts, dependent: :destroy
 end

@@ -4,270 +4,178 @@
     "elements": [
       {
         "description": "",
-        "id": "vardiya-application;create-a-new-schedule",
+        "id": "vardiya-application-end-to-end-flow;create-and-delete-schedules-and-shifts",
         "keyword": "Scenario",
         "line": 3,
-        "name": "Create a new schedule",
+        "name": "Create and delete schedules and shifts",
         "steps": [
           {
             "arguments": [],
             "keyword": "Given ",
             "line": 4,
-            "name": "I am on the schedules page",
+            "name": "I am on the main page",
             "match": {
               "location": "not available:0"
             },
             "result": {
               "status": "passed",
-              "duration": 2165000000
+              "duration": 2408000000
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "Then ",
+            "line": 5,
+            "name": "I should see the heading \"Vardiya Planları\"",
+            "match": {
+              "location": "not available:0"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 114000000
             }
           },
           {
             "arguments": [],
             "keyword": "When ",
-            "line": 5,
-            "name": "I fill in \"name\" with \"Morning Shift Schedule\"",
-            "match": {
-              "location": "not available:0"
-            },
-            "result": {
-              "status": "passed",
-              "duration": 871000000
-            }
-          },
-          {
-            "arguments": [],
-            "keyword": "And ",
-            "line": 6,
-            "name": "I fill in \"start_date\" with \"2025-01-01\"",
-            "match": {
-              "location": "not available:0"
-            },
-            "result": {
-              "status": "passed",
-              "duration": 368000000
-            }
-          },
-          {
-            "arguments": [],
-            "keyword": "And ",
-            "line": 7,
-            "name": "I fill in \"end_date\" with \"2025-01-07\"",
-            "match": {
-              "location": "not available:0"
-            },
-            "result": {
-              "status": "passed",
-              "duration": 370000000
-            }
-          },
-          {
-            "arguments": [],
-            "keyword": "And ",
             "line": 8,
-            "name": "I click \"New Schedule\"",
+            "name": "I create a new schedule named \"Cypress Test Plan\" for \"2025-12-01\" to \"2025-12-31\"",
             "match": {
               "location": "not available:0"
             },
             "result": {
               "status": "passed",
-              "duration": 117000000
+              "duration": 1578000000
             }
-          }
-        ],
-        "tags": [],
-        "type": "scenario"
-      },
-      {
-        "description": "",
-        "id": "vardiya-application;view-schedules",
-        "keyword": "Scenario",
-        "line": 11,
-        "name": "View schedules",
-        "steps": [
+          },
           {
             "arguments": [],
-            "keyword": "Given ",
-            "line": 12,
-            "name": "I am on the schedules page",
+            "keyword": "Then ",
+            "line": 9,
+            "name": "I should see a schedule card for \"Cypress Test Plan\"",
             "match": {
               "location": "not available:0"
             },
             "result": {
               "status": "passed",
-              "duration": 2129000000
+              "duration": 655000000
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "When ",
+            "line": 12,
+            "name": "I view the shifts for \"Cypress Test Plan\"",
+            "match": {
+              "location": "not available:0"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 172000000
             }
           },
           {
             "arguments": [],
             "keyword": "Then ",
             "line": 13,
-            "name": "I should see \"Morning Shift Schedule\"",
+            "name": "I should see the details for \"Cypress Test Plan\"",
             "match": {
               "location": "not available:0"
             },
             "result": {
               "status": "passed",
-              "duration": 46000000
-            }
-          }
-        ],
-        "tags": [],
-        "type": "scenario"
-      },
-      {
-        "description": "",
-        "id": "vardiya-application;update-an-existing-schedule",
-        "keyword": "Scenario",
-        "line": 15,
-        "name": "Update an existing schedule",
-        "steps": [
-          {
-            "arguments": [],
-            "keyword": "Given ",
-            "line": 16,
-            "name": "I am on the schedules page",
-            "match": {
-              "location": "not available:0"
-            },
-            "result": {
-              "status": "passed",
-              "duration": 2012000000
+              "duration": 994000000
             }
           },
           {
             "arguments": [],
             "keyword": "When ",
+            "line": 16,
+            "name": "I add a new shift named \"Test Shift\" from \"2025-12-15T09:00\" to \"2025-12-15T17:00\"",
+            "match": {
+              "location": "not available:0"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 241000000
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "Then ",
             "line": 17,
-            "name": "I click \"Edit\" for \"Morning Shift Schedule\"",
+            "name": "I should see a shift named \"Test Shift\" in the list",
             "match": {
               "location": "not available:0"
             },
             "result": {
               "status": "passed",
-              "duration": 119000000
+              "duration": 1212000000
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "When ",
+            "line": 20,
+            "name": "I delete the shift named \"Test Shift\"",
+            "match": {
+              "location": "not available:0"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 237000000
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "Then ",
+            "line": 21,
+            "name": "I should not see a shift named \"Test Shift\" in the list",
+            "match": {
+              "location": "not available:0"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 329000000
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "When ",
+            "line": 24,
+            "name": "I go back to the main page",
+            "match": {
+              "location": "not available:0"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 1339000000
             }
           },
           {
             "arguments": [],
             "keyword": "And ",
-            "line": 18,
-            "name": "I fill in \"name\" with \"Updated Morning Shift Schedule\"",
+            "line": 25,
+            "name": "I delete the schedule named \"Cypress Test Plan\"",
             "match": {
               "location": "not available:0"
             },
             "result": {
               "status": "passed",
-              "duration": 812000000
+              "duration": 1071000000
             }
           },
           {
             "arguments": [],
-            "keyword": "And ",
-            "line": 19,
-            "name": "I click \"Save Schedule\"",
+            "keyword": "Then ",
+            "line": 26,
+            "name": "I should not see a schedule card for \"Cypress Test Plan\"",
             "match": {
               "location": "not available:0"
             },
             "result": {
               "status": "passed",
-              "duration": 742000000
-            }
-          }
-        ],
-        "tags": [],
-        "type": "scenario"
-      },
-      {
-        "description": "",
-        "id": "vardiya-application;delete-a-schedule",
-        "keyword": "Scenario",
-        "line": 22,
-        "name": "Delete a schedule",
-        "steps": [
-          {
-            "arguments": [],
-            "keyword": "Given ",
-            "line": 23,
-            "name": "I am on the schedules page",
-            "match": {
-              "location": "not available:0"
-            },
-            "result": {
-              "status": "passed",
-              "duration": 1648000000
-            }
-          }
-        ],
-        "tags": [],
-        "type": "scenario"
-      },
-      {
-        "description": "",
-        "id": "vardiya-application;create-a-new-shift",
-        "keyword": "Scenario",
-        "line": 27,
-        "name": "Create a new shift",
-        "steps": [
-          {
-            "arguments": [],
-            "keyword": "Given ",
-            "line": 28,
-            "name": "I am on the schedule details page for \"Morning Shift Schedule\"",
-            "match": {
-              "location": "not available:0"
-            },
-            "result": {
-              "status": "passed",
-              "duration": 5462000000
-            }
-          }
-        ],
-        "tags": [],
-        "type": "scenario"
-      },
-      {
-        "description": "",
-        "id": "vardiya-application;update-an-existing-shift",
-        "keyword": "Scenario",
-        "line": 31,
-        "name": "Update an existing shift",
-        "steps": [
-          {
-            "arguments": [],
-            "keyword": "Given ",
-            "line": 32,
-            "name": "I am on the schedule details page for \"Morning Shift Schedule\"",
-            "match": {
-              "location": "not available:0"
-            },
-            "result": {
-              "status": "passed",
-              "duration": 4134000000
-            }
-          }
-        ],
-        "tags": [],
-        "type": "scenario"
-      },
-      {
-        "description": "",
-        "id": "vardiya-application;delete-a-shift",
-        "keyword": "Scenario",
-        "line": 36,
-        "name": "Delete a shift",
-        "steps": [
-          {
-            "arguments": [],
-            "keyword": "Given ",
-            "line": 37,
-            "name": "I am on the schedule details page for \"Morning Shift Schedule\"",
-            "match": {
-              "location": "not available:0"
-            },
-            "result": {
-              "status": "passed",
-              "duration": 5539000000
+              "duration": 194000000
             }
           }
         ],
@@ -275,10 +183,10 @@
         "type": "scenario"
       }
     ],
-    "id": "vardiya-application",
+    "id": "vardiya-application-end-to-end-flow",
     "line": 1,
     "keyword": "Feature",
-    "name": "Vardiya Application",
+    "name": "Vardiya Application End-to-End Flow",
     "tags": [],
     "uri": "cypress/e2e/features/vardiya.feature"
   }
